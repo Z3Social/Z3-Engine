@@ -61,7 +61,20 @@ CREATE TABLE IF NOT EXISTS circle_members (
 
 CREATE INDEX IF NOT EXISTS idx_circle_members_member ON circle_members(member_did);
 
--- Direct Messages (Tracker #15: Sovereign Direct Messages)
+-- 6. Social Graph & Relationships (Follows, Blocks, Mutes)
+CREATE TABLE IF NOT EXISTS relationships (
+    id BIGSERIAL PRIMARY KEY,
+    source_did VARCHAR(255) NOT NULL REFERENCES accounts(did) ON DELETE CASCADE,
+    target_did VARCHAR(255) NOT NULL REFERENCES accounts(did) ON DELETE CASCADE,
+    relationship_type VARCHAR(32) NOT NULL, -- 'follow', 'block', 'mute'
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    CONSTRAINT uq_relationships UNIQUE (source_did, target_did, relationship_type)
+);
+
+CREATE INDEX IF NOT EXISTS idx_relationships_source ON relationships(source_did, relationship_type);
+CREATE INDEX IF NOT EXISTS idx_relationships_target ON relationships(target_did, relationship_type);
+
+-- 5. Direct Messages (Tracker #15: Sovereign Direct Messages)
 CREATE TABLE IF NOT EXISTS direct_messages (
     id BIGSERIAL PRIMARY KEY,
     sender_did VARCHAR(255) NOT NULL REFERENCES accounts(did) ON DELETE CASCADE,
@@ -74,3 +87,5 @@ CREATE TABLE IF NOT EXISTS direct_messages (
 
 CREATE INDEX IF NOT EXISTS idx_dm_lookup ON direct_messages(sender_did, recipient_did, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_dm_recipient ON direct_messages(recipient_did, read_at);
+
+

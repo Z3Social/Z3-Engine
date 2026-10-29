@@ -66,3 +66,27 @@ test('4. Native Token Authentication', () => {
 
   assert.equal(verifyToken(token + 'tamper'), null);
 });
+
+test('5. Custom Sovereign Lexicon (org.z3social.group & circle)', () => {
+  // Valid group record
+  assertValidRecord('org.z3social.group', {
+    name: 'Ivan Music',
+    description: 'Community for musicians',
+    privacy: 'public',
+    createdAt: new Date().toISOString(),
+  });
+
+  // Invalid group (missing name)
+  assert.throws(() => {
+    assertValidRecord('org.z3social.group', {
+      description: 'Community without name',
+    });
+  }, XRPCError);
+
+  // Valid circle record
+  assertValidRecord('org.z3social.circle', {
+    name: 'Close Friends',
+    isPrivate: true,
+    createdAt: new Date().toISOString(),
+  });
+});
