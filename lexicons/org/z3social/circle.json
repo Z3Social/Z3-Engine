@@ -1,0 +1,20 @@
+{
+  "lexicon": 1,
+  "id": "org.z3social.circle",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "Z3 Social private follower circle (Tracker #10).",
+      "record": {
+        "type": "object",
+        "required": ["name", "createdAt"],
+        "properties": {
+          "name": { "type": "string", "maxLength": 100 },
+          "description": { "type": "string", "maxLength": 500 },
+          "createdAt": { "type": "string" }
+        }
+      }
+    }
+  }
+}

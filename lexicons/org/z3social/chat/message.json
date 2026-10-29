@@ -1,0 +1,21 @@
+{
+  "lexicon": 1,
+  "id": "org.z3social.chat.message",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "Z3 Social sovereign chat message record.",
+      "record": {
+        "type": "object",
+        "required": ["recipient", "text", "createdAt"],
+        "properties": {
+          "recipient": { "type": "string", "description": "Recipient DID" },
+          "text": { "type": "string", "maxLength": 10000 },
+          "media": { "type": "string" },
+          "createdAt": { "type": "string" }
+        }
+      }
+    }
+  }
+}

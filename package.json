@@ -1,0 +1,20 @@
+{
+  "name": "z3-engine",
+  "version": "1.0.0",
+  "description": "Z3-Engine - Lightweight sovereign social engine (AT-Protocol sovereign derivative)",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "init-db": "node scripts/init-db.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.22.3",
+    "pg": "^8.23.1"
+  }
+}
