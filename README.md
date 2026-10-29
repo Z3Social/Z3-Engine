@@ -8,7 +8,13 @@ Lightweight, sovereign social engine built exclusively in Node.js (pure JavaScri
 - **Runtime**: Pure Node.js (ES Modules, `"type": "module"`).
 - **Database**: PostgreSQL with strict connection pooling (`max: 10`, `idleTimeout: 30s`, `connTimeout: 2s`).
 - **Zero Build Tools**: No Webpack, Babel, Vite, or TSC.
-- **Frontend Compatibility**: Direct API bridge supporting `Z3-UI` (Mastodon / Soapbox REST contract) and native XRPC calls simultaneously.
+- **Frontend Compatibility and Protocol Independence**: Z3-Engine will provide a native API for Z3 Social, derived from AT Protocol foundations and customized for Z3's own requirements.
+- **Native XRPC interface:** Support Z3's adapted XRPC endpoints and Lexicon schemas as the primary protocol interface.
+- **Z3-UI integration:** Gradually replace the inherited Mastodon/Soapbox REST API dependencies in Z3-UI with native Z3 API calls.
+- **Migration compatibility:** Existing Mastodon-compatible endpoints may be retained temporarily where necessary during the transition, but they must not dictate Z3's permanent architecture or protocol design.
+- **Independent protocol:** Z3 will define its own identity rules, data models, endpoints, permissions, and social features. It will not require Mastodon API compatibility or interoperability with standard AT Protocol services.
+
+**Long-term objective:** Z3-UI and Z3-Engine will operate as native components of Z3 Social, without depending on Mastodon or Soapbox compatibility layers.
 
 ## Directory Structure
 
