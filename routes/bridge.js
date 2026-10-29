@@ -2,8 +2,8 @@ import express from 'express';
 import { query } from '../config/db.js';
 import { hashPassword, verifyPassword, generateKeyPair } from '../lib/crypto.js';
 import { createToken, requireAuth } from '../middleware/auth.js';
-import { XRPCError } from '../lib/lex/index.js';
-import { generateTID } from '../lib/syntax.js';
+import { XRPCError, assertValidRecord } from '../lib/lex/index.js';
+import { generateTID, formatAtUri } from '../lib/syntax.js';
 
 export const bridgeRouter = express.Router();
 
@@ -37,7 +37,46 @@ function accountToMastodon(acc) {
   };
 }
 
-// Instance discovery for Z3-UI
+function recordToStatus(row) {
+  const data = row.data || {};
+  return {
+    id: row.rkey,
+    uri: formatAtUri(row.did, row.collection, row.rkey),
+    url: `http://localhost:3036/@${row.handle}/posts/${row.rkey}`,
+    account: accountToMastodon({
+      did: row.did,
+      handle: row.handle,
+      display_name: row.display_name,
+      avatar_url: row.avatar_url,
+      banner_url: row.banner_url,
+      created_at: row.created_at,
+    }),
+    content: data.text || '',
+    created_at: data.createdAt || row.created_at,
+    reblogs_count: 0,
+    favourites_count: 0,
+    replies_count: 0,
+    favourited: false,
+    reblogged: false,
+    muted: false,
+    pinned: false,
+    sensitive: false,
+    spoiler_text: '',
+    visibility: 'public',
+    media_attachments: [],
+    mentions: [],
+    tags: (data.tags || []).map((t) => ({ name: t, url: `/tags/${t}` })),
+    emojis: [],
+    card: null,
+    poll: null,
+    group: data.group ? { id: data.group, title: data.group } : null,
+    pleroma: {
+      quote_visible: true,
+    },
+  };
+}
+
+// ------------------------------------------------ Instance & Metadata
 bridgeRouter.get('/api/v1/instance', (req, res) => {
   res.json({
     uri: 'z3.social',
@@ -86,7 +125,7 @@ bridgeRouter.get('/api/pleroma/frontend_configurations', (req, res) => {
   });
 });
 
-// Auth & Credentials
+// ------------------------------------------------ Auth & Accounts
 bridgeRouter.get('/api/v1/accounts/verify_credentials', requireAuth, (req, res) => {
   res.json(accountToMastodon(req.user));
 });
@@ -131,9 +170,8 @@ bridgeRouter.post('/oauth/token', async (req, res) => {
   });
 });
 
-// Registration (Tracker #4)
 bridgeRouter.post('/api/v1/accounts', async (req, res) => {
-  const { username, email, password, agreement } = req.body;
+  const { username, email, password } = req.body;
   if (!username || !email || !password) {
     return res.status(400).json({ error: 'Username, email and password are required.' });
   }
@@ -168,7 +206,71 @@ bridgeRouter.post('/api/v1/accounts', async (req, res) => {
   }
 });
 
-// Timeline adapter: feeds posts from sovereign records
+// ------------------------------------------------ Statuses & Timelines
+// POST /api/v1/statuses -> Translates into putRecord (app.bsky.feed.post)
+bridgeRouter.post('/api/v1/statuses', requireAuth, async (req, res) => {
+  const text = (req.body.status || req.body.text || '').trim();
+  if (!text) {
+    return res.status(400).json({ error: 'Status content cannot be empty.' });
+  }
+
+  const rkey = generateTID();
+  const record = {
+    text,
+    createdAt: new Date().toISOString(),
+    group: req.body.group_id || undefined,
+  };
+
+  try {
+    // Validate with Lexicon engine
+    assertValidRecord('app.bsky.feed.post', record);
+
+    const insertSql = `
+      INSERT INTO records (did, collection, rkey, data, created_at, updated_at)
+      VALUES ($1, 'app.bsky.feed.post', $2, $3, NOW(), NOW())
+      RETURNING id, did, collection, rkey, data, created_at
+    `;
+
+    const row = await query(insertSql, [req.user.did, rkey, JSON.stringify(record)]);
+    const resultStatus = recordToStatus({
+      ...row.rows[0],
+      handle: req.user.handle,
+      display_name: req.user.display_name,
+      avatar_url: req.user.avatar_url,
+      banner_url: req.user.banner_url,
+    });
+
+    res.json(resultStatus);
+  } catch (err) {
+    console.error('[Create Status Bridge Error]:', err);
+    res.status(500).json({ error: 'Failed to create status.' });
+  }
+});
+
+bridgeRouter.get('/api/v1/statuses/:id', async (req, res) => {
+  const { id } = req.params;
+  const rows = await query(
+    `SELECT r.did, r.collection, r.rkey, r.data, r.created_at,
+            a.handle, a.display_name, a.avatar_url, a.banner_url
+     FROM records r
+     JOIN accounts a ON a.did = r.did
+     WHERE r.rkey = $1 AND r.collection = 'app.bsky.feed.post'`,
+    [id]
+  );
+  if (!rows.rows.length) return res.status(404).json({ error: 'Status not found' });
+  res.json(recordToStatus(rows.rows[0]));
+});
+
+bridgeRouter.delete('/api/v1/statuses/:id', requireAuth, async (req, res) => {
+  const { id } = req.params;
+  const delRes = await query(
+    `DELETE FROM records WHERE rkey = $1 AND did = $2 AND collection = 'app.bsky.feed.post' RETURNING id`,
+    [id, req.user.did]
+  );
+  if (!delRes.rows.length) return res.status(404).json({ error: 'Status not found or not owned by you.' });
+  res.json({ id });
+});
+
 bridgeRouter.get(['/api/v1/timelines/home', '/api/v1/timelines/public'], async (req, res) => {
   try {
     const limit = Math.min(Math.max(Number(req.query.limit || 20), 1), 80);
@@ -183,34 +285,7 @@ bridgeRouter.get(['/api/v1/timelines/home', '/api/v1/timelines/public'], async (
       [limit]
     );
 
-    const statuses = rows.rows.map((row) => ({
-      id: row.rkey,
-      uri: `at://${row.did}/${row.collection}/${row.rkey}`,
-      url: `http://localhost:3036/@${row.handle}/posts/${row.rkey}`,
-      account: accountToMastodon({
-        did: row.did,
-        handle: row.handle,
-        display_name: row.display_name,
-        avatar_url: row.avatar_url,
-        banner_url: row.banner_url,
-        created_at: row.created_at,
-      }),
-      content: row.data.text || '',
-      created_at: row.data.createdAt || row.created_at,
-      reblogs_count: 0,
-      favourites_count: 0,
-      replies_count: 0,
-      media_attachments: [],
-      tags: (row.data.tags || []).map((t) => ({ name: t, url: `/tags/${t}` })),
-      emojis: [],
-      visibility: 'public',
-      group: row.data.group ? { id: row.data.group, title: row.data.group } : null,
-      pleroma: {
-        quote_visible: true,
-      },
-    }));
-
-    res.json(statuses);
+    res.json(rows.rows.map(recordToStatus));
   } catch (err) {
     console.error('[Timeline Bridge Error]:', err);
     res.status(500).json({ error: 'Internal server error' });
