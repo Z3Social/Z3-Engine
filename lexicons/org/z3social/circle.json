@@ -12,7 +12,8 @@
         "properties": {
           "name": { "type": "string", "maxLength": 100 },
           "description": { "type": "string", "maxLength": 500 },
-          "createdAt": { "type": "string" }
+          "isPrivate": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "datetime" }
         }
       }
     }

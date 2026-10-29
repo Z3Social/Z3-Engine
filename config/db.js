@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 
@@ -139,13 +140,43 @@ export async function query(text, params = []) {
     let rows = [...store.accounts];
     if (normalized.includes('WHERE did = $1')) {
       rows = rows.filter((a) => a.did === params[0]);
+    } else if (normalized.includes('did = $1 OR handle = $1') || normalized.includes('did = $1 OR handle = $1')) {
+      const p = String(params[0] || '').toLowerCase();
+      rows = rows.filter((a) => (a.did === params[0] || a.handle === params[0] || (a.handle && a.handle.toLowerCase() === p)) && a.deleted_at === null);
+    } else if (normalized.includes('lower(handle) = lower($1)') || normalized.includes('LOWER(handle) = LOWER($1)')) {
+      const p = String(params[0] || '').toLowerCase();
+      rows = rows.filter((a) => ((a.handle && a.handle.toLowerCase() === p) || (a.email && a.email.toLowerCase() === p)) && a.deleted_at === null);
     } else if (normalized.includes('WHERE handle = $1') || normalized.includes('WHERE (handle = $1 OR email = $1)')) {
       rows = rows.filter((a) => (a.handle === params[0] || a.email === params[0]) && a.deleted_at === null);
     }
     return { rows, rowCount: rows.length };
   }
 
-  // 2. INSERT into accounts
+  // 1b. UPDATE accounts
+  if (normalized.startsWith('UPDATE accounts SET')) {
+    // e.g. UPDATE accounts SET display_name = $1, bio = $2, avatar_url = $3, banner_url = $4, updated_at = NOW() WHERE did = $5 RETURNING *
+    const targetDid = params[params.length - 1];
+    const acc = store.accounts.find((a) => a.did === targetDid);
+    if (acc) {
+      // Parse assignments
+      const setPart = normalized.slice('UPDATE accounts SET'.length, normalized.indexOf('WHERE')).trim();
+      const assignments = setPart.split(',').map((s) => s.trim());
+      assignments.forEach((assign) => {
+        const [col, paramPlaceholder] = assign.split('=').map((s) => s.trim());
+        const match = paramPlaceholder.match(/\$(\d+)/);
+        if (match) {
+          const pIdx = parseInt(match[1], 10) - 1;
+          acc[col] = params[pIdx];
+        } else if (paramPlaceholder.toUpperCase() === 'NOW()') {
+          acc[col] = new Date().toISOString();
+        }
+      });
+      acc.updated_at = new Date().toISOString();
+      saveFallback();
+      return { rows: [acc], rowCount: 1 };
+    }
+    return { rows: [], rowCount: 0 };
+  }
   if (normalized.startsWith('INSERT INTO accounts')) {
     const [did, handle, email, password_hash, public_key, display_name] = params;
     const newAcc = {
@@ -166,6 +197,16 @@ export async function query(text, params = []) {
     store.accounts.push(newAcc);
     saveFallback();
     return { rows: [newAcc], rowCount: 1 };
+  }
+
+  // 2. SELECT circles / groups
+  if (normalized.startsWith('SELECT') && (normalized.includes('FROM circles') || normalized.includes('FROM groups'))) {
+    const list = store.groups || store.circles || [];
+    if (normalized.includes('WHERE id = $1')) {
+      const g = list.find((x) => x.id === params[0] || x.slug === params[0]);
+      return { rows: g ? [g] : [], rowCount: g ? 1 : 0 };
+    }
+    return { rows: list, rowCount: list.length };
   }
 
   // 3. SELECT timeline / records
@@ -192,6 +233,8 @@ export async function query(text, params = []) {
 
     if (normalized.includes('r.rkey = $1')) {
       rows = rows.filter((r) => r.rkey === params[0]);
+    } else if (normalized.includes("r.data->>'group' = $1") || normalized.includes("r.data->>'groupId' = $1")) {
+      rows = rows.filter((r) => r.data?.group === params[0] || r.data?.groupId === params[0]);
     } else if (normalized.includes("r.collection = 'app.bsky.feed.post'")) {
       rows = rows.filter((r) => r.collection === 'app.bsky.feed.post');
     } else if (normalized.includes('did = $1 AND collection = $2 AND rkey = $3')) {
@@ -244,6 +287,21 @@ export async function query(text, params = []) {
     return { rows: [record], rowCount: 1 };
   }
 
+  // 4b. UPDATE records
+  if (normalized.startsWith('UPDATE records SET')) {
+    // e.g. UPDATE records SET data = $1, updated_at = NOW() WHERE rkey = $2 RETURNING *
+    const rkey = params[params.length - 1];
+    const rec = store.records.find((r) => r.rkey === rkey);
+    if (rec) {
+      const dataJson = params[0];
+      rec.data = typeof dataJson === 'string' ? JSON.parse(dataJson) : dataJson;
+      rec.updated_at = new Date().toISOString();
+      saveFallback();
+      return { rows: [rec], rowCount: 1 };
+    }
+    return { rows: [], rowCount: 0 };
+  }
+
   // 5. DELETE from records
   if (normalized.startsWith('DELETE FROM records')) {
     const initLen = store.records.length;
@@ -257,6 +315,83 @@ export async function query(text, params = []) {
     const deleted = initLen - store.records.length;
     if (deleted > 0) saveFallback();
     return { rows: deleted > 0 ? [{ id: 1 }] : [], rowCount: deleted };
+  }
+
+  // 6. direct_messages (Tracker #15: Sovereign Direct Messages)
+  if (normalized.startsWith('SELECT') && normalized.includes('FROM direct_messages')) {
+    store.direct_messages = store.direct_messages || [];
+    let rows = [...store.direct_messages];
+    if (normalized.includes('(sender_did = $1 AND recipient_did = $2) OR (sender_did = $2 AND recipient_did = $1)')) {
+      const u1 = params[0];
+      const u2 = params[1];
+      rows = rows.filter(
+        (m) => (m.sender_did === u1 && m.recipient_did === u2) || (m.sender_did === u2 && m.recipient_did === u1)
+      );
+    } else if (normalized.includes('sender_did = $1 OR recipient_did = $1')) {
+      const u1 = params[0];
+      rows = rows.filter((m) => m.sender_did === u1 || m.recipient_did === u1);
+    } else if (normalized.includes('id = $1')) {
+      rows = rows.filter((m) => String(m.id) === String(params[0]));
+    }
+    rows.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    return { rows, rowCount: rows.length };
+  }
+
+  if (normalized.startsWith('INSERT INTO direct_messages')) {
+    store.direct_messages = store.direct_messages || [];
+    const [sender_did, recipient_did, ciphertext, media_url] = params;
+    const msg = {
+      id: crypto.randomUUID ? crypto.randomUUID() : `dm_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      sender_did,
+      recipient_did,
+      ciphertext,
+      media_url: media_url || null,
+      reactions: {},
+      read_at: null,
+      created_at: new Date().toISOString(),
+    };
+    store.direct_messages.push(msg);
+    saveFallback();
+    return { rows: [msg], rowCount: 1 };
+  }
+
+  if (normalized.startsWith('UPDATE direct_messages SET')) {
+    store.direct_messages = store.direct_messages || [];
+    if (normalized.includes('read_at = NOW()') || normalized.includes('read_at = $1')) {
+      // e.g. UPDATE direct_messages SET read_at = NOW() WHERE sender_did = $1 AND recipient_did = $2 AND read_at IS NULL
+      const sender = params[0];
+      const recipient = params[1];
+      let updatedCount = 0;
+      store.direct_messages.forEach((m) => {
+        if (m.sender_did === sender && m.recipient_did === recipient && !m.read_at) {
+          m.read_at = new Date().toISOString();
+          updatedCount++;
+        }
+      });
+      if (updatedCount > 0) saveFallback();
+      return { rows: [], rowCount: updatedCount };
+    }
+    if (normalized.includes('reactions = $1 WHERE id = $2')) {
+      const targetMsg = store.direct_messages.find((m) => String(m.id) === String(params[1]));
+      if (targetMsg) {
+        targetMsg.reactions = typeof params[0] === 'string' ? JSON.parse(params[0]) : params[0];
+        saveFallback();
+        return { rows: [targetMsg], rowCount: 1 };
+      }
+    }
+  }
+
+  if (normalized.startsWith('DELETE FROM direct_messages')) {
+    store.direct_messages = store.direct_messages || [];
+    const initLen = store.direct_messages.length;
+    if (normalized.includes('id = $1 AND sender_did = $2')) {
+      store.direct_messages = store.direct_messages.filter(
+        (m) => !(String(m.id) === String(params[0]) && m.sender_did === params[1])
+      );
+    }
+    const deleted = initLen - store.direct_messages.length;
+    if (deleted > 0) saveFallback();
+    return { rows: deleted > 0 ? [{ id: params[0] }] : [], rowCount: deleted };
   }
 
   // Fallback default

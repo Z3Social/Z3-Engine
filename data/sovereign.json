@@ -7,14 +7,14 @@
       "password_hash": "fc1aba062a6f7b46e798dc8377bc7190:9f1dcc40feeba83c5c572567eba998f915a8f2d589bcac696982eafdc8ca4e4f102d9844e5b04c56ee681beea805e0528d0a7a3b842378292bf484072ce2ade5",
       "public_key": null,
       "is_private": false,
-      "display_name": "Ivan Albrieu",
+      "display_name": "Ivan A.",
       "avatar_url": "/uploads/avatar-6aa0c37b-9344-4484-81d3-1707bbaa1a25-1793043344894.png",
       "banner_url": "/media/z3-central-cover.jpg",
-      "bio": "A new way to form communities online with simplicity and freedom. Without anyone to stop all of you. No need of Discord or FANDOM or X or anything like that. ZЗ is the best website to form communities online!",
+      "bio": "Updated sovereign test bio",
       "fields": [],
       "is_admin": true,
       "created_at": "2022-12-23T18:50:19.000Z",
-      "updated_at": "2026-10-29T14:59:28.491Z",
+      "updated_at": "2026-10-29T16:53:22.971Z",
       "deleted_at": null
     },
     {
@@ -31,7 +31,7 @@
       "fields": [],
       "is_admin": false,
       "created_at": "2022-12-23T18:52:57.000Z",
-      "updated_at": "2026-10-29T14:59:28.493Z",
+      "updated_at": "2026-10-29T15:22:25.418Z",
       "deleted_at": null
     }
   ],
@@ -63,10 +63,14 @@
       "data": {
         "text": "QueQue Groups and The Pancakes got merged into PanQueQues Groups.",
         "createdAt": "2022-12-23T19:29:48.000Z",
-        "media": []
+        "media": [],
+        "reactions": {
+          "like": []
+        },
+        "reblogs": []
       },
       "created_at": "2022-12-23T19:29:48.000Z",
-      "updated_at": "2022-12-23T19:29:48.000Z"
+      "updated_at": "2026-10-29T16:53:22.867Z"
     },
     {
       "id": 3,
@@ -236,7 +240,10 @@
             "embedUrl": "https://www.youtube-nocookie.com/embed/AzpYIojTuWQ",
             "title": "YouTube Video"
           }
-        ]
+        ],
+        "reactions": {
+          "like": []
+        }
       },
       "created_at": "2026-10-24T13:50:44.549Z",
       "updated_at": "2026-10-24T13:50:44.549Z"
@@ -257,7 +264,13 @@
             "previewUrl": "https://static.klipy.com/ii/d7aec6f6f171607374b2065c836f92f4/a4/63/MeW6Gxse.gif",
             "title": "Rouxls Kaard's Deltarune Entrance"
           }
-        ]
+        ],
+        "reactions": {
+          "👍": [],
+          "like": [
+            "did:z3:ivanalbrieu"
+          ]
+        }
       },
       "created_at": "2026-10-24T14:48:14.886Z",
       "updated_at": "2026-10-24T14:48:14.886Z"
@@ -276,7 +289,16 @@
             "type": "video",
             "url": "/uploads/1792853465223-d064371c75b2.mp4"
           }
-        ]
+        ],
+        "reactions": {
+          "😂": [],
+          "❤️": [],
+          "🤣": [],
+          "👍": [],
+          "like": [
+            "did:z3:ivanalbrieu"
+          ]
+        }
       },
       "created_at": "2026-10-24T14:51:12.192Z",
       "updated_at": "2026-10-24T14:51:12.192Z"
@@ -298,7 +320,8 @@
             "preview": "https://static.klipy.com/ii/c3a19a0b747a76e98651f2b9a3cca5ff/79/48/NkKaXDG9.gif",
             "title": "Que Agradable Sujeto (Los Simpson)"
           }
-        ]
+        ],
+        "in_reply_to_id": "16bc08a5-2fb8-4d7e-8bd1-c5115867741b"
       },
       "created_at": "2026-10-24T14:48:49.854Z",
       "updated_at": "2026-10-24T14:48:49.854Z"
@@ -327,7 +350,16 @@
             "preview": "https://static.klipy.com/ii/c3a19a0b747a76e98651f2b9a3cca5ff/74/db/CBRJnMpq.gif",
             "title": "My Little Pony Big Mac Says Eeyup"
           }
-        ]
+        ],
+        "reactions": {
+          "🐴": [
+            "did:z3:ivanalbrieu"
+          ],
+          "🤠": [
+            "did:z3:ivanalbrieu"
+          ]
+        },
+        "in_reply_to_id": "b9a0024d-8b40-479d-be12-ba26afcd80bf"
       },
       "created_at": "2026-10-24T15:53:20.908Z",
       "updated_at": "2026-10-24T15:53:20.908Z"
@@ -340,13 +372,249 @@
       "data": {
         "text": "🐴 🐴 🐴 🐴 🐴 🐴 🐴 ",
         "createdAt": "2026-10-28T20:28:27.132Z",
-        "media": []
+        "media": [],
+        "reblogs": []
       },
       "created_at": "2026-10-28T20:28:27.132Z",
-      "updated_at": "2026-10-28T20:28:27.132Z"
+      "updated_at": "2026-10-29T16:55:48.304Z"
+    },
+    {
+      "id": 17,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "3myznwouxsc22",
+      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:14:27.637Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
+      "created_at": "2026-10-29T16:14:27.637Z",
+      "updated_at": "2026-10-29T16:14:27.637Z"
+    },
+    {
+      "id": 18,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "3myznx4mbg222",
+      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:14:42.032Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
+      "created_at": "2026-10-29T16:14:42.032Z",
+      "updated_at": "2026-10-29T16:14:42.032Z"
+    },
+    {
+      "id": 19,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "3myzoi52l3k22",
+      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:24:12.926Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
+      "created_at": "2026-10-29T16:24:12.926Z",
+      "updated_at": "2026-10-29T16:24:12.926Z"
+    },
+    {
+      "id": 20,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "3myzpzhnvd222",
+      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:51:48.212Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
+      "created_at": "2026-10-29T16:51:48.212Z",
+      "updated_at": "2026-10-29T16:51:48.212Z"
+    },
+    {
+      "id": 21,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "3myzq3hgbcs22",
+      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:52:55.071Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
+      "created_at": "2026-10-29T16:52:55.071Z",
+      "updated_at": "2026-10-29T16:52:55.071Z"
+    },
+    {
+      "id": 22,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "3myzq4bwa3c22",
+      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:53:22.857Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
+      "created_at": "2026-10-29T16:53:22.857Z",
+      "updated_at": "2026-10-29T16:53:22.857Z"
+    },
+    {
+      "id": 23,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "3myzqaljyy222",
+      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:55:47.160Z\",\"reblog_of_id\":\"69163612-7d4a-4b07-96e3-e6a3aec4cf15\"}",
+      "created_at": "2026-10-29T16:55:47.160Z",
+      "updated_at": "2026-10-29T16:55:47.160Z"
+    }
+  ],
+  "groups": [
+    {
+      "id": "da46cc43-97a6-4514-9233-c0ee3a79c1fa",
+      "slug": "ivan-music",
+      "name": "Ivan Music",
+      "description": "Welcome to the group! You can connect with other members, get updates and share videos.",
+      "cover": "/uploads/ivan-music-cover.jpg",
+      "category": "Music",
+      "privacy": "public",
+      "visible": true,
+      "hasFiles": true,
+      "createdAt": "2023-12-21T17:40:00.000Z",
+      "createdBy": "did:z3:ivanalbrieu",
+      "members": [
+        {
+          "userId": "did:z3:ivanalbrieu",
+          "role": "admin",
+          "joinedAt": "2022-12-23T18:50:19.000Z"
+        },
+        {
+          "userId": "did:z3:agusalbrieu",
+          "role": "member",
+          "joinedAt": "2022-12-23T18:52:57.000Z"
+        }
+      ],
+      "requests": [],
+      "pinnedPostId": null,
+      "lastActivity": "2023-12-21T17:40:00.000Z",
+      "creatorId": "did:z3:ivanalbrieu",
+      "adminIds": [
+        "did:z3:ivanalbrieu"
+      ],
+      "rules": [
+        {
+          "id": "1",
+          "title": "Music Discussions Only",
+          "text": "Share your favorite songs, electronic music productions, and sound design tips."
+        },
+        {
+          "id": "2",
+          "title": "Original Creations Welcome",
+          "text": "Share your SoundCloud, YouTube, or audio tracks for community feedback."
+        }
+      ]
+    },
+    {
+      "id": "3215117e-3da4-4423-8c05-28fceedc6be1",
+      "slug": "ray-william-johnson",
+      "name": "Ray William Johnson",
+      "description": "Welcome to the group! You can connect with other members, get updates and share videos.",
+      "cover": "/uploads/ray-william-johnson-cover.jpg",
+      "category": "General",
+      "privacy": "hidden",
+      "visible": false,
+      "hasFiles": true,
+      "createdAt": "2024-11-27T21:19:08.000Z",
+      "createdBy": "did:z3:ivanalbrieu",
+      "members": [
+        {
+          "userId": "did:z3:ivanalbrieu",
+          "role": "admin",
+          "joinedAt": "2022-12-23T18:50:19.000Z"
+        },
+        {
+          "userId": "did:z3:agusalbrieu",
+          "role": "member",
+          "joinedAt": "2022-12-23T18:52:57.000Z"
+        }
+      ],
+      "requests": [],
+      "pinnedPostId": null,
+      "lastActivity": "2026-10-24T13:50:44.549Z",
+      "creatorId": "did:z3:ivanalbrieu",
+      "adminIds": [
+        "did:z3:ivanalbrieu"
+      ],
+      "rules": [
+        {
+          "id": "1",
+          "title": "=3 Fan Community",
+          "text": "Discussions, memes, and classic episode throwbacks from Ray William Johnson."
+        }
+      ],
+      "visibility": "hidden"
+    },
+    {
+      "id": "6d8bd2d7-f227-475b-bfe0-77838734f4e5",
+      "slug": "esqueleto-z3-prueba",
+      "name": "Esqueleto Z3 (Prueba)",
+      "description": "Welcome to the group! You can connect with other members, get updates and share videos.",
+      "cover": "/uploads/esqueleto-z3-cover.jpg",
+      "category": "General",
+      "privacy": "public",
+      "visible": false,
+      "hasFiles": true,
+      "createdAt": "2023-12-09T03:08:28.000Z",
+      "createdBy": "did:z3:ivanalbrieu",
+      "members": [
+        {
+          "userId": "did:z3:ivanalbrieu",
+          "role": "admin",
+          "joinedAt": "2022-12-23T18:50:19.000Z"
+        },
+        {
+          "userId": "did:z3:agusalbrieu",
+          "role": "member",
+          "joinedAt": "2022-12-23T18:52:57.000Z"
+        }
+      ],
+      "requests": [],
+      "pinnedPostId": null,
+      "lastActivity": "2023-12-09T03:09:59.000Z",
+      "creatorId": "did:z3:ivanalbrieu",
+      "adminIds": [
+        "did:z3:ivanalbrieu"
+      ],
+      "rules": [
+        {
+          "id": "1",
+          "title": "Be Respectful",
+          "text": "Treat everyone with dignity and respect."
+        }
+      ]
+    },
+    {
+      "id": "41c4088a-a4c9-406d-848b-c50548855ac3",
+      "slug": "rouxls-kaard",
+      "name": "Rouxls Kaard",
+      "description": "Thou art welcome to the Rouxls Kaard group! A grand space to connect, share, and solve puzzles.",
+      "cover": "/uploads/1792812259099-a41f4a890ed9.png",
+      "category": "General",
+      "privacy": "public",
+      "visible": true,
+      "hasFiles": true,
+      "createdAt": "2026-10-24T00:24:19.000Z",
+      "createdBy": "did:z3:ivanalbrieu",
+      "members": [
+        {
+          "userId": "did:z3:ivanalbrieu",
+          "role": "admin",
+          "joinedAt": "2022-12-23T18:50:19.000Z"
+        },
+        {
+          "userId": "did:z3:agusalbrieu",
+          "role": "member",
+          "joinedAt": "2022-12-23T18:52:57.000Z"
+        }
+      ],
+      "requests": [],
+      "pinnedPostId": null,
+      "lastActivity": "2026-10-24T15:53:20.908Z",
+      "creatorId": "did:z3:ivanalbrieu",
+      "adminIds": [
+        "did:z3:ivanalbrieu"
+      ],
+      "rules": [
+        {
+          "id": "1",
+          "title": "Be Respectful",
+          "text": "Treat everyone with dignity and respect."
+        }
+      ]
     }
   ],
   "circles": [],
   "circle_members": [],
-  "direct_messages": []
+  "direct_messages": [
+    {
+      "id": "3032e776-e22a-4641-aa8b-3e0812e15f40",
+      "sender_did": "did:z3:ivanalbrieu",
+      "recipient_did": "did:z3:agusalbrieu",
+      "ciphertext": "Hello from sovereign DM tab! ✨",
+      "media_url": null,
+      "reactions": {
+        "🔥": [
+          "did:z3:ivanalbrieu"
+        ]
+      },
+      "read_at": null,
+      "created_at": "2026-10-29T16:53:23.017Z"
+    }
+  ]
 }

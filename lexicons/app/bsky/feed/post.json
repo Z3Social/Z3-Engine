@@ -10,14 +10,19 @@
         "type": "object",
         "required": ["text", "createdAt"],
         "properties": {
-          "text": { "type": "string", "maxLength": 5000 },
-          "createdAt": { "type": "string" },
+          "text": { "type": "string", "maxLength": 5000, "maxGraphemes": 3000 },
+          "createdAt": { "type": "string", "format": "datetime" },
           "reply": { "type": "unknown" },
           "embed": { "type": "unknown" },
           "facets": { "type": "array" },
           "tags": { "type": "array", "items": { "type": "string" } },
           "circle": { "type": "string", "description": "Optional circle ID for private follower posts" },
-          "group": { "type": "string", "description": "Optional group ID if posted to a group" }
+          "group": { "type": "string", "description": "Optional group ID if posted to a group" },
+          "in_reply_to_id": { "type": "string", "description": "Status ID this post replies to" },
+          "media": { "type": "array", "description": "Media attachments" },
+          "reactions": { "type": "unknown", "description": "Reactions and likes map" },
+          "reblogs": { "type": "array", "description": "List of user DIDs who reblogged" },
+          "reblog_of_id": { "type": "string", "description": "Target post ID if this is a reblog" }
         }
       }
     }

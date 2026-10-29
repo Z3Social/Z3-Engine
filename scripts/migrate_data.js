@@ -48,6 +48,7 @@ const records = oldDb.posts.map((p, idx) => ({
 const sovereign = {
   accounts,
   records,
+  groups: oldDb.groups || [],
   circles: [],
   circle_members: [],
   direct_messages: [],

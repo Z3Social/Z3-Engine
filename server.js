@@ -7,6 +7,7 @@ import { WebSocketServer } from 'ws';
 import { query } from './config/db.js';
 import { xrpcRouter } from './routes/xrpc.js';
 import { bridgeRouter } from './routes/bridge.js';
+import { createToken, verifyToken } from './middleware/auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -104,10 +105,52 @@ app.use((err, req, res, next) => {
 const server = http.createServer(app);
 
 // Sovereign WebSocket Server for real-time streaming (/api/v1/streaming/)
-const wss = new WebSocketServer({ server });
+const clients = new Map(); // ws -> { did, stream }
+
+const wss = new WebSocketServer({
+  server,
+  handleProtocols: (protocols) => {
+    // Return first protocol (e.g. bearer token) to complete WebSocket handshake successfully
+    return Array.from(protocols)[0] || false;
+  },
+});
+
+global.__z3BroadcastChatUpdate = (senderDid, recipientDid, senderChatSummary, recipientChatSummary) => {
+  for (const [clientWs, meta] of clients.entries()) {
+    if (clientWs.readyState !== clientWs.OPEN) continue;
+    if (meta.did === senderDid) {
+      clientWs.send(JSON.stringify({
+        event: 'pleroma:chat_update',
+        payload: JSON.stringify(senderChatSummary),
+      }));
+    } else if (meta.did === recipientDid) {
+      clientWs.send(JSON.stringify({
+        event: 'pleroma:chat_update',
+        payload: JSON.stringify(recipientChatSummary),
+      }));
+    }
+  }
+};
+
 wss.on('connection', (ws, req) => {
+  const url = new URL(req.url, 'http://localhost');
+  const streamParam = url.searchParams.get('stream') || 'user';
+  
+  // Extract token from query or protocol
+  const queryToken = url.searchParams.get('access_token');
+  const protoToken = ws.protocol || null;
+  const rawToken = queryToken || protoToken;
+
+  let authUser = null;
+  if (rawToken) {
+    authUser = verifyToken(rawToken);
+  }
+
+  const clientMeta = { did: authUser ? authUser.did : null, stream: streamParam };
+  clients.set(ws, clientMeta);
+
   if (process.env.NODE_ENV !== 'production') {
-    console.log(`[Z3-Engine WS] Client connected: ${req.url}`);
+    console.log(`[Z3-Engine WS] Connected (${streamParam}) - User: ${clientMeta.did || 'guest'}`);
   }
 
   // Keep-alive heartbeat ping every 30 seconds
@@ -119,10 +162,12 @@ wss.on('connection', (ws, req) => {
 
   ws.on('close', () => {
     clearInterval(pingInterval);
+    clients.delete(ws);
   });
 
   ws.on('error', () => {
     clearInterval(pingInterval);
+    clients.delete(ws);
   });
 });
 
