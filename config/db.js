@@ -34,7 +34,7 @@ function getFallbackStore() {
           did: 'did:z3:ivanalbrieu',
           handle: 'ivanalbrieu',
           email: 'ivan@z3.social',
-          password_hash: '5f4dcc3b5aa765d61d8327deb882cf99:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+          password_hash: 'd2ea49e202cc4beafaf6fb9db87b7c11:9ab79c23d41a5d611d87beb329f43d3b9929cc09fb0d3080da638d2b5b0dd560b0d99c366e86ae890bd6050f1fe6ac51050d5dc6e207010ed779543186bf39f0',
           public_key: null,
           is_private: false,
           display_name: 'Ivan Albrieu',

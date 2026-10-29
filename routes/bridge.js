@@ -8,6 +8,7 @@ import { generateTID, formatAtUri } from '../lib/syntax.js';
 export const bridgeRouter = express.Router();
 
 function accountToMastodon(acc) {
+  const isAdmin = acc.handle === 'ivanalbrieu' || acc.is_admin || false;
   return {
     id: acc.did,
     username: acc.handle,
@@ -27,11 +28,13 @@ function accountToMastodon(acc) {
     statuses_count: 0,
     fields: [],
     emojis: [],
+    admin: isAdmin,
+    moderator: isAdmin,
     verified: true,
     pleroma: {
       tags: ['verified'],
-      is_admin: true,
-      is_moderator: true,
+      is_admin: isAdmin,
+      is_moderator: isAdmin,
       relationship: {},
     },
   };
@@ -84,7 +87,7 @@ bridgeRouter.get('/api/v1/instance', (req, res) => {
     short_description: 'Sovereign social engine backed by PostgreSQL',
     description: 'Sovereign social engine backed by PostgreSQL',
     email: 'contact@z3.social',
-    version: '2.7.2 (compatible; Z3-Engine 1.0)',
+    version: '2.7.2 (compatible; Akkoma 3.10.4+soapbox)',
     urls: { streaming_api: 'ws://localhost:3036' },
     stats: { user_count: 1, status_count: 0, domain_count: 0 },
     thumbnail: '/media/logo.png',
@@ -97,7 +100,10 @@ bridgeRouter.get('/api/v1/instance', (req, res) => {
       media_attachments: { supported_mime_types: ['image/jpeg', 'image/png', 'image/gif', 'video/mp4'] },
     },
     pleroma: {
-      metadata: { features: ['groups', 'direct_messages'] },
+      metadata: {
+        features: ['groups', 'direct_messages', 'pleroma_api', 'profile_directory', 'quote_posting'],
+        staff_accounts: ['/users/ivanalbrieu'],
+      },
       vapid_public_key: 'test',
     },
   });
@@ -130,6 +136,39 @@ bridgeRouter.get('/api/v1/accounts/verify_credentials', requireAuth, (req, res) 
   res.json(accountToMastodon(req.user));
 });
 
+bridgeRouter.get('/api/v1/accounts/relationships', (req, res) => {
+  const ids = Array.isArray(req.query.id) ? req.query.id : [req.query.id].filter(Boolean);
+  res.json(
+    ids.map((id) => ({
+      id,
+      following: false,
+      showing_reblogs: true,
+      notifying: false,
+      followed_by: false,
+      blocking: false,
+      blocked_by: false,
+      muting: false,
+      muting_notifications: false,
+      requested: false,
+      domain_blocking: false,
+      endorsed: false,
+      note: '',
+    }))
+  );
+});
+
+bridgeRouter.get('/api/v1/accounts/:id', async (req, res) => {
+  const { id } = req.params;
+  const accRes = await query(
+    'SELECT did, handle, email, display_name, avatar_url, banner_url, bio, is_private, created_at, deleted_at FROM accounts WHERE (did = $1 OR handle = $1 OR LOWER(handle) = LOWER($1)) AND deleted_at IS NULL',
+    [id]
+  );
+  if (!accRes.rows.length) {
+    return res.status(404).json({ error: 'Account not found' });
+  }
+  res.json(accountToMastodon(accRes.rows[0]));
+});
+
 bridgeRouter.post('/api/v1/apps', (req, res) => {
   res.json({
     id: 'z3-app',
@@ -141,14 +180,15 @@ bridgeRouter.post('/api/v1/apps', (req, res) => {
 });
 
 bridgeRouter.post('/oauth/token', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body || {};
   if (!username || !password) {
     return res.status(400).json({ error: 'invalid_request', error_description: 'Username and password required.' });
   }
 
+  const cleanUser = String(username).trim();
   const accRes = await query(
-    'SELECT did, handle, email, password_hash, display_name, avatar_url, banner_url, bio, is_private, created_at, deleted_at FROM accounts WHERE (handle = $1 OR email = $1) AND deleted_at IS NULL',
-    [username]
+    'SELECT did, handle, email, password_hash, display_name, avatar_url, banner_url, bio, is_private, created_at, deleted_at FROM accounts WHERE (LOWER(handle) = LOWER($1) OR LOWER(email) = LOWER($1)) AND deleted_at IS NULL',
+    [cleanUser]
   );
 
   if (!accRes.rows.length) {
@@ -291,5 +331,18 @@ bridgeRouter.get(['/api/v1/timelines/home', '/api/v1/timelines/public'], async (
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// ------------------------------------------------ Empty compatibility endpoints
+bridgeRouter.get('/api/v1/custom_emojis', (req, res) => res.json([]));
+bridgeRouter.get('/api/v1/announcements', (req, res) => res.json([]));
+bridgeRouter.get('/api/v1/notifications', (req, res) => res.json([]));
+bridgeRouter.get('/api/v1/markers', (req, res) => res.json({}));
+bridgeRouter.get('/api/v1/scheduled_statuses', (req, res) => res.json([]));
+bridgeRouter.get('/api/v1/filters', (req, res) => res.json([]));
+bridgeRouter.get('/api/v1/lists', (req, res) => res.json([]));
+bridgeRouter.get('/api/v1/preferences', (req, res) => res.json({}));
+bridgeRouter.get('/api/v1/pleroma/admin/reports', (req, res) => res.json({ reports: [], total: 0 }));
+bridgeRouter.get('/api/v1/pleroma/admin/users', (req, res) => res.json({ users: [], count: 0 }));
+bridgeRouter.get('/api/v1/pleroma/admin/config', (req, res) => res.json({ configs: [] }));
 
 export default bridgeRouter;

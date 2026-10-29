@@ -27,6 +27,10 @@ const MEDIA_DIR = [
 const app = express();
 app.disable('x-powered-by');
 
+// Body parsers mounted globally for all routes (XRPC, OAuth, Mastodon API)
+app.use(express.json({ limit: '30mb' }));
+app.use(express.urlencoded({ extended: true, limit: '30mb' }));
+
 // Lightweight request logging
 app.use((req, res, next) => {
   if (process.env.NODE_ENV !== 'production') {
