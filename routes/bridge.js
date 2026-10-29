@@ -9,6 +9,7 @@ export const bridgeRouter = express.Router();
 
 function accountToMastodon(acc) {
   const isAdmin = acc.handle === 'ivanalbrieu' || acc.is_admin || false;
+  const fields = Array.isArray(acc.fields) ? acc.fields : [];
   return {
     id: acc.did,
     username: acc.handle,
@@ -26,22 +27,49 @@ function accountToMastodon(acc) {
     followers_count: 0,
     following_count: 0,
     statuses_count: 0,
-    fields: [],
+    fields: fields,
     emojis: [],
     admin: isAdmin,
     moderator: isAdmin,
     verified: true,
+    discoverable: true,
+    source: {
+      note: acc.bio || '',
+      fields: fields,
+      privacy: acc.is_private ? 'private' : 'public',
+      sensitive: false,
+      pleroma: {
+        actor_type: 'Person',
+        discoverable: true,
+      },
+    },
     pleroma: {
       tags: ['verified'],
       is_admin: isAdmin,
       is_moderator: isAdmin,
       relationship: {},
+      notification_settings: {
+        block_from_strangers: false,
+      },
     },
   };
 }
 
 function recordToStatus(row) {
   const data = row.data || {};
+  const mediaAttachments = (data.media || []).map((m, idx) => {
+    return {
+      id: `media-${idx}`,
+      type: m.type || 'image',
+      url: m.url || '',
+      preview_url: m.url || '',
+      remote_url: null,
+      description: m.description || '',
+      blurhash: null,
+      meta: {},
+    };
+  });
+
   return {
     id: row.rkey,
     uri: formatAtUri(row.did, row.collection, row.rkey),
@@ -62,11 +90,11 @@ function recordToStatus(row) {
     favourited: false,
     reblogged: false,
     muted: false,
-    pinned: false,
+    pinned: !!data.pinned,
     sensitive: false,
     spoiler_text: '',
     visibility: 'public',
-    media_attachments: [],
+    media_attachments: mediaAttachments,
     mentions: [],
     tags: (data.tags || []).map((t) => ({ name: t, url: `/tags/${t}` })),
     emojis: [],
@@ -134,6 +162,43 @@ bridgeRouter.get('/api/pleroma/frontend_configurations', (req, res) => {
 // ------------------------------------------------ Auth & Accounts
 bridgeRouter.get('/api/v1/accounts/verify_credentials', requireAuth, (req, res) => {
   res.json(accountToMastodon(req.user));
+});
+
+// PATCH /api/v1/accounts/update_credentials -> Updates profile info (name, note/bio, avatar, etc.)
+bridgeRouter.patch('/api/v1/accounts/update_credentials', requireAuth, async (req, res) => {
+  try {
+    const { display_name, note, fields_attributes, locked } = req.body || {};
+    const updates = [];
+    const params = [];
+    let pIdx = 1;
+
+    if (display_name !== undefined) {
+      updates.push(`display_name = $${pIdx++}`);
+      params.push(String(display_name));
+    }
+    if (note !== undefined) {
+      updates.push(`bio = $${pIdx++}`);
+      params.push(String(note));
+    }
+    if (locked !== undefined) {
+      updates.push(`is_private = $${pIdx++}`);
+      params.push(!!locked);
+    }
+
+    if (updates.length > 0) {
+      params.push(req.user.did);
+      const sql = `UPDATE accounts SET ${updates.join(', ')} WHERE did = $${pIdx} RETURNING *`;
+      const updateRes = await query(sql, params);
+      if (updateRes.rows.length) {
+        return res.json(accountToMastodon(updateRes.rows[0]));
+      }
+    }
+
+    res.json(accountToMastodon(req.user));
+  } catch (err) {
+    console.error('[Update Credentials Error]:', err);
+    res.status(500).json({ error: 'Failed to update credentials' });
+  }
 });
 
 bridgeRouter.get('/api/v1/accounts/relationships', (req, res) => {

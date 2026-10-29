@@ -1,0 +1,352 @@
+{
+  "accounts": [
+    {
+      "did": "did:z3:ivanalbrieu",
+      "handle": "ivanalbrieu",
+      "email": "ivanalbrieu@z3.social",
+      "password_hash": "fc1aba062a6f7b46e798dc8377bc7190:9f1dcc40feeba83c5c572567eba998f915a8f2d589bcac696982eafdc8ca4e4f102d9844e5b04c56ee681beea805e0528d0a7a3b842378292bf484072ce2ade5",
+      "public_key": null,
+      "is_private": false,
+      "display_name": "Ivan Albrieu",
+      "avatar_url": "/uploads/avatar-6aa0c37b-9344-4484-81d3-1707bbaa1a25-1793043344894.png",
+      "banner_url": "/media/z3-central-cover.jpg",
+      "bio": "A new way to form communities online with simplicity and freedom. Without anyone to stop all of you. No need of Discord or FANDOM or X or anything like that. ZЗ is the best website to form communities online!",
+      "fields": [],
+      "is_admin": true,
+      "created_at": "2022-12-23T18:50:19.000Z",
+      "updated_at": "2026-10-29T14:59:28.491Z",
+      "deleted_at": null
+    },
+    {
+      "did": "did:z3:agusalbrieu",
+      "handle": "agusalbrieu",
+      "email": "agusalbrieu@gmail.com",
+      "password_hash": "fc1aba062a6f7b46e798dc8377bc7190:9f1dcc40feeba83c5c572567eba998f915a8f2d589bcac696982eafdc8ca4e4f102d9844e5b04c56ee681beea805e0528d0a7a3b842378292bf484072ce2ade5",
+      "public_key": null,
+      "is_private": false,
+      "display_name": "Agustin Albrieu",
+      "avatar_url": "/uploads/agustin-avatar.jpg",
+      "banner_url": "/media/z3-central-cover.jpg",
+      "bio": "Member of ZЗ Social.",
+      "fields": [],
+      "is_admin": false,
+      "created_at": "2022-12-23T18:52:57.000Z",
+      "updated_at": "2026-10-29T14:59:28.493Z",
+      "deleted_at": null
+    }
+  ],
+  "records": [
+    {
+      "id": 1,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "d2cf8702-01d1-4f3c-aed1-89bcee48c774",
+      "data": {
+        "text": "PanQueQues, due to the meaning of panqueque or pancake as someone that constantly changes political position and ideology, it got officially renamed to Z3 Social, to reflect the new goals to surpass X's required paid account feature and the view to the left wing, specially for Russians.",
+        "createdAt": "2023-10-24T18:14:54.068Z",
+        "editedAt": "2026-10-24T13:57:27.152Z",
+        "media": [
+          {
+            "type": "image",
+            "url": "/uploads/1792850246315-b4914a67ce45.png"
+          }
+        ]
+      },
+      "created_at": "2023-10-24T18:14:54.068Z",
+      "updated_at": "2026-10-24T13:57:27.152Z"
+    },
+    {
+      "id": 2,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "3681593f-65ea-41f9-b16e-7029313a1937",
+      "data": {
+        "text": "QueQue Groups and The Pancakes got merged into PanQueQues Groups.",
+        "createdAt": "2022-12-23T19:29:48.000Z",
+        "media": []
+      },
+      "created_at": "2022-12-23T19:29:48.000Z",
+      "updated_at": "2022-12-23T19:29:48.000Z"
+    },
+    {
+      "id": 3,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "b4051201-5937-441e-a7f2-e6fb47525075",
+      "data": {
+        "text": "Welcome to our group **Ivan Music**! A space for us to connect and share with each other. Start by posting your thoughts, sharing media, or creating a poll.",
+        "createdAt": "2023-12-21T17:40:00.000Z",
+        "group": "da46cc43-97a6-4514-9233-c0ee3a79c1fa",
+        "media": []
+      },
+      "created_at": "2023-12-21T17:40:00.000Z",
+      "updated_at": "2023-12-21T17:40:00.000Z"
+    },
+    {
+      "id": 4,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "cff1b7e2-2083-4761-848f-b8362c911f8d",
+      "data": {
+        "text": "",
+        "createdAt": "2024-11-27T21:20:21.000Z",
+        "group": "3215117e-3da4-4423-8c05-28fceedc6be1",
+        "media": [
+          {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=l-8JfIJKHWg",
+            "youtubeId": "l-8JfIJKHWg",
+            "embedUrl": "https://www.youtube-nocookie.com/embed/l-8JfIJKHWg",
+            "title": "YouTube Video"
+          }
+        ]
+      },
+      "created_at": "2024-11-27T21:20:21.000Z",
+      "updated_at": "2024-11-27T21:20:21.000Z"
+    },
+    {
+      "id": 5,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "9f0670bf-9e65-4be9-8a36-031283a9c8ca",
+      "data": {
+        "text": "",
+        "createdAt": "2024-11-27T21:19:50.000Z",
+        "group": "3215117e-3da4-4423-8c05-28fceedc6be1",
+        "media": [
+          {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=WfYyBp4Ln2s",
+            "youtubeId": "WfYyBp4Ln2s",
+            "embedUrl": "https://www.youtube-nocookie.com/embed/WfYyBp4Ln2s",
+            "title": "YouTube Video"
+          }
+        ]
+      },
+      "created_at": "2024-11-27T21:19:50.000Z",
+      "updated_at": "2024-11-27T21:19:50.000Z"
+    },
+    {
+      "id": 6,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "40e7d58a-dc5a-4db0-9f60-c7787f75f61c",
+      "data": {
+        "text": "Welcome to our group **Ray William Johnson**! A space for us to connect and share with each other. Start by posting your thoughts, sharing media, or creating a poll.",
+        "createdAt": "2024-11-27T21:19:08.000Z",
+        "group": "3215117e-3da4-4423-8c05-28fceedc6be1",
+        "media": []
+      },
+      "created_at": "2024-11-27T21:19:08.000Z",
+      "updated_at": "2024-11-27T21:19:08.000Z"
+    },
+    {
+      "id": 7,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "b5dfbee4-b02c-443d-a79e-e148f5037c5c",
+      "data": {
+        "text": "",
+        "createdAt": "2023-12-09T03:09:40.000Z",
+        "group": "6d8bd2d7-f227-475b-bfe0-77838734f4e5",
+        "media": [
+          {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=6M6samPEMpM",
+            "youtubeId": "6M6samPEMpM",
+            "embedUrl": "https://www.youtube-nocookie.com/embed/6M6samPEMpM",
+            "title": "YouTube Video"
+          }
+        ]
+      },
+      "created_at": "2023-12-09T03:09:40.000Z",
+      "updated_at": "2023-12-09T03:09:40.000Z"
+    },
+    {
+      "id": 8,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "83d212cf-8ea6-431e-b0d7-5164879e9099",
+      "data": {
+        "text": "",
+        "createdAt": "2023-12-09T03:09:15.000Z",
+        "group": "6d8bd2d7-f227-475b-bfe0-77838734f4e5",
+        "media": [
+          {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=2RpMnnT03m8",
+            "youtubeId": "2RpMnnT03m8",
+            "embedUrl": "https://www.youtube-nocookie.com/embed/2RpMnnT03m8",
+            "title": "YouTube Video"
+          }
+        ]
+      },
+      "created_at": "2023-12-09T03:09:15.000Z",
+      "updated_at": "2023-12-09T03:09:15.000Z"
+    },
+    {
+      "id": 9,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "cd1b92f9-21e4-4162-9458-913fe6128595",
+      "data": {
+        "text": "Welcome to our group **Esqueleto Z3 (Prueba)**! A space for us to connect and share with each other. Start by posting your thoughts, sharing media, or creating a poll.",
+        "createdAt": "2023-12-09T03:08:28.000Z",
+        "group": "6d8bd2d7-f227-475b-bfe0-77838734f4e5",
+        "media": []
+      },
+      "created_at": "2023-12-09T03:08:28.000Z",
+      "updated_at": "2023-12-09T03:08:28.000Z"
+    },
+    {
+      "id": 10,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "0a76fb33-80dc-4247-9663-8d2dd1d02316",
+      "data": {
+        "text": "",
+        "createdAt": "2026-10-24T13:01:35.344Z",
+        "group": "41c4088a-a4c9-406d-848b-c50548855ac3",
+        "media": [
+          {
+            "type": "gif",
+            "url": "https://static.klipy.com/ii/4493325008d34b7bf8cd6813cd5c1619/37/ce/U1VVU1T8AVwmm2pj.gif",
+            "previewUrl": "https://static.klipy.com/ii/4493325008d34b7bf8cd6813cd5c1619/37/ce/U1VVU1T8AVwmm2pj.gif",
+            "title": "Steve Minecraft Steve"
+          }
+        ]
+      },
+      "created_at": "2026-10-24T13:01:35.344Z",
+      "updated_at": "2026-10-24T13:01:35.344Z"
+    },
+    {
+      "id": 11,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "a83581a2-13f8-49c8-868b-1dea6dbdd7b2",
+      "data": {
+        "text": "",
+        "createdAt": "2026-10-24T13:50:44.549Z",
+        "group": "3215117e-3da4-4423-8c05-28fceedc6be1",
+        "media": [
+          {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=AzpYIojTuWQ",
+            "youtubeId": "AzpYIojTuWQ",
+            "embedUrl": "https://www.youtube-nocookie.com/embed/AzpYIojTuWQ",
+            "title": "YouTube Video"
+          }
+        ]
+      },
+      "created_at": "2026-10-24T13:50:44.549Z",
+      "updated_at": "2026-10-24T13:50:44.549Z"
+    },
+    {
+      "id": 12,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "16bc08a5-2fb8-4d7e-8bd1-c5115867741b",
+      "data": {
+        "text": "Rouxls kaard!!!",
+        "createdAt": "2026-10-24T14:48:14.886Z",
+        "group": "41c4088a-a4c9-406d-848b-c50548855ac3",
+        "media": [
+          {
+            "type": "gif",
+            "url": "https://static.klipy.com/ii/d7aec6f6f171607374b2065c836f92f4/a4/63/MeW6Gxse.gif",
+            "previewUrl": "https://static.klipy.com/ii/d7aec6f6f171607374b2065c836f92f4/a4/63/MeW6Gxse.gif",
+            "title": "Rouxls Kaard's Deltarune Entrance"
+          }
+        ]
+      },
+      "created_at": "2026-10-24T14:48:14.886Z",
+      "updated_at": "2026-10-24T14:48:14.886Z"
+    },
+    {
+      "id": 13,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "4925606b-d812-421b-bdbc-ce6adc411791",
+      "data": {
+        "text": "Ahhhh",
+        "createdAt": "2026-10-24T14:51:12.192Z",
+        "group": "41c4088a-a4c9-406d-848b-c50548855ac3",
+        "media": [
+          {
+            "type": "video",
+            "url": "/uploads/1792853465223-d064371c75b2.mp4"
+          }
+        ]
+      },
+      "created_at": "2026-10-24T14:51:12.192Z",
+      "updated_at": "2026-10-24T14:51:12.192Z"
+    },
+    {
+      "id": 14,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "b9a0024d-8b40-479d-be12-ba26afcd80bf",
+      "data": {
+        "text": "What a funny character!",
+        "createdAt": "2026-10-24T14:48:49.854Z",
+        "group": "41c4088a-a4c9-406d-848b-c50548855ac3",
+        "media": [
+          {
+            "type": "gif",
+            "url": "https://static.klipy.com/ii/c3a19a0b747a76e98651f2b9a3cca5ff/79/48/NkKaXDG9.gif",
+            "slug": "que-agradable-sujeto",
+            "preview": "https://static.klipy.com/ii/c3a19a0b747a76e98651f2b9a3cca5ff/79/48/NkKaXDG9.gif",
+            "title": "Que Agradable Sujeto (Los Simpson)"
+          }
+        ]
+      },
+      "created_at": "2026-10-24T14:48:49.854Z",
+      "updated_at": "2026-10-24T14:48:49.854Z"
+    },
+    {
+      "id": 15,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "86358512-84b5-4366-a89b-d0328833e17a",
+      "data": {
+        "text": "Eeyup!",
+        "createdAt": "2026-10-24T15:53:20.908Z",
+        "group": "41c4088a-a4c9-406d-848b-c50548855ac3",
+        "media": [
+          {
+            "type": "gif",
+            "url": "https://static.klipy.com/ii/c3a19a0b747a76e98651f2b9a3cca5ff/62/9b/EILg75bS.gif",
+            "slug": "yup-better-call-saul",
+            "preview": "https://static.klipy.com/ii/c3a19a0b747a76e98651f2b9a3cca5ff/62/9b/EILg75bS.gif",
+            "title": "Yup! Better Call Saul Cowboy Scene"
+          },
+          {
+            "type": "gif",
+            "url": "https://static.klipy.com/ii/c3a19a0b747a76e98651f2b9a3cca5ff/74/db/CBRJnMpq.gif",
+            "slug": "eeyup-mlp",
+            "preview": "https://static.klipy.com/ii/c3a19a0b747a76e98651f2b9a3cca5ff/74/db/CBRJnMpq.gif",
+            "title": "My Little Pony Big Mac Says Eeyup"
+          }
+        ]
+      },
+      "created_at": "2026-10-24T15:53:20.908Z",
+      "updated_at": "2026-10-24T15:53:20.908Z"
+    },
+    {
+      "id": 16,
+      "did": "did:z3:ivanalbrieu",
+      "collection": "app.bsky.feed.post",
+      "rkey": "69163612-7d4a-4b07-96e3-e6a3aec4cf15",
+      "data": {
+        "text": "🐴 🐴 🐴 🐴 🐴 🐴 🐴 ",
+        "createdAt": "2026-10-28T20:28:27.132Z",
+        "media": []
+      },
+      "created_at": "2026-10-28T20:28:27.132Z",
+      "updated_at": "2026-10-28T20:28:27.132Z"
+    }
+  ],
+  "circles": [],
+  "circle_members": [],
+  "direct_messages": []
+}

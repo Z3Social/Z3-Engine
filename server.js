@@ -1,7 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import http from 'node:http';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
+import { WebSocketServer } from 'ws';
 import { query } from './config/db.js';
 import { xrpcRouter } from './routes/xrpc.js';
 import { bridgeRouter } from './routes/bridge.js';
@@ -49,9 +51,18 @@ app.use((req, res, next) => {
   next();
 });
 
+const UPLOADS_DIR = [
+  path.join(__dirname, '..', 'Z3-Backend', 'data', 'uploads'),
+  path.join(__dirname, '..', 'wixwebsiteclone', 'data', 'uploads'),
+  path.join(__dirname, 'data', 'uploads'),
+].find((p) => fs.existsSync(p)) || path.join(__dirname, 'data', 'uploads');
+
 // Static assets & Media
 if (fs.existsSync(MEDIA_DIR)) {
   app.use('/media', express.static(MEDIA_DIR));
+}
+if (fs.existsSync(UPLOADS_DIR)) {
+  app.use('/uploads', express.static(UPLOADS_DIR));
 }
 app.get('/favicon.png', (req, res) => {
   const logoPath = path.join(MEDIA_DIR, 'logo.png');
@@ -90,11 +101,37 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'InternalServerError', message: err.message });
 });
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+
+// Sovereign WebSocket Server for real-time streaming (/api/v1/streaming/)
+const wss = new WebSocketServer({ server });
+wss.on('connection', (ws, req) => {
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`[Z3-Engine WS] Client connected: ${req.url}`);
+  }
+
+  // Keep-alive heartbeat ping every 30 seconds
+  const pingInterval = setInterval(() => {
+    if (ws.readyState === ws.OPEN) {
+      ws.ping();
+    }
+  }, 30000);
+
+  ws.on('close', () => {
+    clearInterval(pingInterval);
+  });
+
+  ws.on('error', () => {
+    clearInterval(pingInterval);
+  });
+});
+
+server.listen(PORT, () => {
   console.log(`===================================================`);
   console.log(`       Z3-ENGINE: Sovereign Social Core            `);
   console.log(` Listening: http://localhost:${PORT}               `);
   console.log(` XRPC Root: http://localhost:${PORT}/xrpc/         `);
+  console.log(` Real-time Stream: ws://localhost:${PORT}/api/v1/streaming/`);
   console.log(` Memory at boot: ${Math.round(process.memoryUsage().rss / 1024 / 1024)}MB RAM`);
   console.log(`===================================================`);
 });
