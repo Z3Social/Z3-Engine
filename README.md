@@ -4,7 +4,7 @@ Lightweight, sovereign social engine built exclusively in Node.js (pure JavaScri
 
 ## Architecture
 
-- **Protocol**: AT Protocol October 2023 derivative (DIDs, TIDs, XRPC endpoints, Lexicons, JSON records, `at://` URIs).
+- **Protocol**: AT Protocol derivative (DIDs, TIDs, XRPC endpoints, Lexicons, JSON records, `at://` URIs).
 - **Runtime**: Pure Node.js (ES Modules, `"type": "module"`).
 - **Database**: PostgreSQL with strict connection pooling (`max: 10`, `idleTimeout: 30s`, `connTimeout: 2s`).
 - **Zero Build Tools**: No Webpack, Babel, Vite, or TSC.
