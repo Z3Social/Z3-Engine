@@ -12,6 +12,16 @@ import { generateTID, formatAtUri } from '../lib/syntax.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Public federation domain advertised by this engine (never the dev host:port).
+// Z3_HOST may be set with or without a protocol, e.g. "z3.social".
+const Z3_HOST = (process.env.Z3_HOST || 'z3.social')
+  .trim()
+  .replace(/^[a-z]+:\/\//i, '')
+  .replace(/\/+$/, '');
+
+// Fully-qualified handle shown in the UI, e.g. "ivanalbrieu@z3.social"
+const fqnFor = (handle) => (handle ? `${handle}@${Z3_HOST}` : '');
+
 // Uploads directory
 const UPLOAD_DIR = [
   path.join(__dirname, '..', 'data', 'uploads'),
@@ -111,6 +121,7 @@ function accountToMastodon(acc) {
     id: acc.did,
     username: acc.handle,
     acct: acc.handle,
+    fqn: fqnFor(acc.handle),
     display_name: acc.display_name || acc.handle,
     locked: !!acc.is_private,
     bot: false,
@@ -332,14 +343,16 @@ async function recordToStatus(row, currentUserId = null) {
 
 // ------------------------------------------------ Instance & Metadata
 bridgeRouter.get('/api/v1/instance', (req, res) => {
+  const wsProto = req.get('x-forwarded-proto') === 'https' ? 'wss' : 'ws';
+  const wsHost = req.get('host') || `localhost:${process.env.PORT || 3036}`;
   res.json({
-    uri: 'z3.social',
+    uri: Z3_HOST,
     title: 'Z3 Social',
     short_description: 'Sovereign social engine backed by PostgreSQL',
     description: 'Sovereign social engine backed by PostgreSQL',
-    email: 'contact@z3.social',
+    email: `contact@${Z3_HOST}`,
     version: '2.7.2 (compatible; Akkoma 3.10.4+soapbox)',
-    urls: { streaming_api: 'ws://localhost:3036' },
+    urls: { streaming_api: `${wsProto}://${wsHost}` },
     stats: { user_count: 2, status_count: 16, domain_count: 0 },
     thumbnail: '/media/logo.png',
     languages: ['en'],

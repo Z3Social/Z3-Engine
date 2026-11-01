@@ -65,10 +65,29 @@ if (fs.existsSync(MEDIA_DIR)) {
 if (fs.existsSync(UPLOADS_DIR)) {
   app.use('/uploads', express.static(UPLOADS_DIR));
 }
-app.get('/favicon.png', (req, res) => {
-  const logoPath = path.join(MEDIA_DIR, 'logo.png');
-  if (fs.existsSync(logoPath)) return res.sendFile(logoPath);
+const ICON_DIR = path.join(MEDIA_DIR, 'Icon');
+
+// Tab/app icon: prefer the dedicated Z3 icon, fall back to the logo mark.
+const FAVICON_SVG = [path.join(ICON_DIR, 'Icon.svg'), path.join(MEDIA_DIR, 'logo.svg')].find(
+  (p) => fs.existsSync(p)
+);
+const FAVICON_PNG = [path.join(ICON_DIR, 'Icon.png'), path.join(MEDIA_DIR, 'logo.png')].find(
+  (p) => fs.existsSync(p)
+);
+
+const sendIcon = (file) => (req, res) => {
+  if (file) return res.sendFile(file);
   res.sendStatus(204);
+};
+
+app.get('/favicon.svg', sendIcon(FAVICON_SVG));
+app.get('/favicon.png', sendIcon(FAVICON_PNG));
+app.get('/apple-touch-icon.png', sendIcon(FAVICON_PNG));
+app.get('/apple-touch-icon-precomposed.png', sendIcon(FAVICON_PNG));
+app.get('/favicon.ico', (req, res) => {
+  if (!FAVICON_PNG) return res.sendStatus(204);
+  res.type('image/png');
+  return res.sendFile(FAVICON_PNG);
 });
 
 // 1. XRPC Sovereign Router (/xrpc/:nsid)
