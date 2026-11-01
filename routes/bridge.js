@@ -786,6 +786,7 @@ bridgeRouter.post('/api/v1/statuses', requireAuth, async (req, res) => {
 // GET /api/v1/statuses/:id/context -> Thread hierarchy with ancestors and descendants
 bridgeRouter.get('/api/v1/statuses/:id/context', optionalAuth, async (req, res) => {
   const currentId = req.params.id;
+  if (currentId === 'posts' || !currentId) return res.json({ ancestors: [], descendants: [] });
   const currentRows = await query(
     `SELECT r.did, r.collection, r.rkey, r.data, r.created_at,
             a.handle, a.display_name, a.avatar_url, a.banner_url
@@ -844,6 +845,7 @@ bridgeRouter.get('/api/v1/statuses/:id/context', optionalAuth, async (req, res) 
 
 bridgeRouter.get('/api/v1/statuses/:id', optionalAuth, async (req, res) => {
   const { id } = req.params;
+  if (id === 'posts' || !id) return res.status(404).json({ error: 'Invalid status ID' });
   const rows = await query(
     `SELECT r.did, r.collection, r.rkey, r.data, r.created_at,
             a.handle, a.display_name, a.avatar_url, a.banner_url
@@ -1458,6 +1460,7 @@ bridgeRouter.delete('/api/v1/pleroma/chats/:chatId/messages/:messageId/reactions
 });
 
 // ------------------------------------------------ Empty compatibility endpoints
+bridgeRouter.get('/api/v1/pleroma/birthdays', (req, res) => res.json([]));
 bridgeRouter.get('/api/v1/custom_emojis', (req, res) => res.json([]));
 bridgeRouter.get('/api/v1/announcements', (req, res) => res.json([]));
 bridgeRouter.get('/api/v1/notifications', (req, res) => res.json([]));

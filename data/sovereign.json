@@ -14,7 +14,7 @@
       "fields": [],
       "is_admin": true,
       "created_at": "2022-12-23T18:50:19.000Z",
-      "updated_at": "2026-10-29T16:53:22.971Z",
+      "updated_at": "2026-11-01T02:26:50.490Z",
       "deleted_at": null
     },
     {
@@ -70,7 +70,7 @@
         "reblogs": []
       },
       "created_at": "2022-12-23T19:29:48.000Z",
-      "updated_at": "2026-10-29T16:53:22.867Z"
+      "updated_at": "2026-11-01T02:26:50.400Z"
     },
     {
       "id": 3,
@@ -381,58 +381,54 @@
     {
       "id": 17,
       "did": "did:z3:ivanalbrieu",
-      "collection": "3myznwouxsc22",
-      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:14:27.637Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
+      "collection": "app.bsky.feed.post",
+      "rkey": "3myznwouxsc22",
       "created_at": "2026-10-29T16:14:27.637Z",
-      "updated_at": "2026-10-29T16:14:27.637Z"
+      "updated_at": "2026-10-29T16:14:27.637Z",
+      "data": {
+        "text": "",
+        "createdAt": "2026-10-29T16:14:27.637Z",
+        "reblog_of_id": "3681593f-65ea-41f9-b16e-7029313a1937"
+      }
     },
     {
       "id": 18,
       "did": "did:z3:ivanalbrieu",
-      "collection": "3myznx4mbg222",
-      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:14:42.032Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
+      "collection": "app.bsky.feed.post",
+      "rkey": "3myznx4mbg222",
       "created_at": "2026-10-29T16:14:42.032Z",
-      "updated_at": "2026-10-29T16:14:42.032Z"
+      "updated_at": "2026-10-29T16:14:42.032Z",
+      "data": {
+        "text": "",
+        "createdAt": "2026-10-29T16:14:42.032Z",
+        "reblog_of_id": "3681593f-65ea-41f9-b16e-7029313a1937"
+      }
     },
     {
       "id": 19,
       "did": "did:z3:ivanalbrieu",
-      "collection": "3myzoi52l3k22",
-      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:24:12.926Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
+      "collection": "app.bsky.feed.post",
+      "rkey": "3myzoi52l3k22",
       "created_at": "2026-10-29T16:24:12.926Z",
-      "updated_at": "2026-10-29T16:24:12.926Z"
-    },
-    {
-      "id": 20,
-      "did": "did:z3:ivanalbrieu",
-      "collection": "3myzpzhnvd222",
-      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:51:48.212Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
-      "created_at": "2026-10-29T16:51:48.212Z",
-      "updated_at": "2026-10-29T16:51:48.212Z"
-    },
-    {
-      "id": 21,
-      "did": "did:z3:ivanalbrieu",
-      "collection": "3myzq3hgbcs22",
-      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:52:55.071Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
-      "created_at": "2026-10-29T16:52:55.071Z",
-      "updated_at": "2026-10-29T16:52:55.071Z"
-    },
-    {
-      "id": 22,
-      "did": "did:z3:ivanalbrieu",
-      "collection": "3myzq4bwa3c22",
-      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:53:22.857Z\",\"reblog_of_id\":\"3681593f-65ea-41f9-b16e-7029313a1937\"}",
-      "created_at": "2026-10-29T16:53:22.857Z",
-      "updated_at": "2026-10-29T16:53:22.857Z"
+      "updated_at": "2026-10-29T16:24:12.926Z",
+      "data": {
+        "text": "",
+        "createdAt": "2026-10-29T16:24:12.926Z",
+        "reblog_of_id": "3681593f-65ea-41f9-b16e-7029313a1937"
+      }
     },
     {
       "id": 23,
       "did": "did:z3:ivanalbrieu",
-      "collection": "3myzqaljyy222",
-      "rkey": "{\"text\":\"\",\"createdAt\":\"2026-10-29T16:55:47.160Z\",\"reblog_of_id\":\"69163612-7d4a-4b07-96e3-e6a3aec4cf15\"}",
+      "collection": "app.bsky.feed.post",
+      "rkey": "3myzqaljyy222",
       "created_at": "2026-10-29T16:55:47.160Z",
-      "updated_at": "2026-10-29T16:55:47.160Z"
+      "updated_at": "2026-10-29T16:55:47.160Z",
+      "data": {
+        "text": "",
+        "createdAt": "2026-10-29T16:55:47.160Z",
+        "reblog_of_id": "69163612-7d4a-4b07-96e3-e6a3aec4cf15"
+      }
     }
   ],
   "groups": [
@@ -615,6 +611,48 @@
       },
       "read_at": null,
       "created_at": "2026-10-29T16:53:23.017Z"
+    },
+    {
+      "id": "f11094f7-9734-4f1f-a1b0-208a16422ad5",
+      "sender_did": "did:z3:ivanalbrieu",
+      "recipient_did": "did:z3:agusalbrieu",
+      "ciphertext": "Hello from sovereign DM tab! ✨",
+      "media_url": null,
+      "reactions": {
+        "🔥": [
+          "did:z3:ivanalbrieu"
+        ]
+      },
+      "read_at": null,
+      "created_at": "2026-11-01T02:24:47.879Z"
+    },
+    {
+      "id": "a9646b02-e9d6-4d90-887a-1cd84b1b9a12",
+      "sender_did": "did:z3:ivanalbrieu",
+      "recipient_did": "did:z3:agusalbrieu",
+      "ciphertext": "Hello from sovereign DM tab! ✨",
+      "media_url": null,
+      "reactions": {
+        "🔥": [
+          "did:z3:ivanalbrieu"
+        ]
+      },
+      "read_at": null,
+      "created_at": "2026-11-01T02:25:43.545Z"
+    },
+    {
+      "id": "42f12e66-4931-4ccd-ae52-78c27b83b2cf",
+      "sender_did": "did:z3:ivanalbrieu",
+      "recipient_did": "did:z3:agusalbrieu",
+      "ciphertext": "Hello from sovereign DM tab! ✨",
+      "media_url": null,
+      "reactions": {
+        "🔥": [
+          "did:z3:ivanalbrieu"
+        ]
+      },
+      "read_at": null,
+      "created_at": "2026-11-01T02:26:50.521Z"
     }
   ]
 }

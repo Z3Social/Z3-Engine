@@ -257,7 +257,13 @@ export async function query(text, params = []) {
 
   // 4. INSERT or UPSERT into records
   if (normalized.startsWith('INSERT INTO records')) {
-    const [did, collection, rkey, dataJson] = params;
+    let did, collection, rkey, dataJson;
+    if (params.length === 3 && normalized.includes('\'app.bsky.feed.post\'')) {
+      [did, rkey, dataJson] = params;
+      collection = 'app.bsky.feed.post';
+    } else {
+      [did, collection, rkey, dataJson] = params;
+    }
     const data = typeof dataJson === 'string' ? JSON.parse(dataJson) : dataJson;
 
     const existingIdx = store.records.findIndex(
