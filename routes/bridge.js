@@ -323,8 +323,8 @@ async function recordToStatus(row, currentUserId = null) {
     reblogged: isReblogged,
     muted: false,
     pinned: !!data.pinned,
-    sensitive: false,
-    spoiler_text: '',
+    sensitive: Boolean(data.sensitive === true || (data.labels && (data.labels.values || []).length > 0)),
+    spoiler_text: data.spoiler_text || '',
     visibility: 'public',
     media_attachments: mediaAttachments,
     mentions: [],
@@ -746,12 +746,17 @@ bridgeRouter.post('/api/v1/statuses', requireAuth, async (req, res) => {
   const rkey = generateTID();
   const inReplyToId = req.body.in_reply_to_id || undefined;
   const groupId = req.body.group_id || undefined;
+  const isSensitive = Boolean(req.body.sensitive === true || req.body.sensitive === 'true');
+  const spoilerText = (req.body.spoiler_text || '').trim();
 
   const record = {
     text,
     createdAt: new Date().toISOString(),
     group: groupId,
     in_reply_to_id: inReplyToId,
+    sensitive: isSensitive,
+    spoiler_text: spoilerText,
+    labels: isSensitive ? { '$type': 'com.atproto.label.defs#selfLabels', values: [{ val: '!warn' }] } : undefined,
     media: attachedMedia.length ? attachedMedia : undefined,
     reactions: {},
     reblogs: [],
@@ -1472,5 +1477,25 @@ bridgeRouter.get('/api/v1/preferences', (req, res) => res.json({}));
 bridgeRouter.get('/api/v1/pleroma/admin/reports', (req, res) => res.json({ reports: [], total: 0 }));
 bridgeRouter.get('/api/v1/pleroma/admin/users', (req, res) => res.json({ users: [], count: 0 }));
 bridgeRouter.get('/api/v1/pleroma/admin/config', (req, res) => res.json({ configs: [] }));
+
+bridgeRouter.put('/api/v1/pleroma/admin/statuses/:id', requireAuth, async (req, res) => {
+  const { id } = req.params;
+  const { sensitive } = req.body;
+  const rows = await query(
+    'SELECT r.did, r.collection, r.rkey, r.data, r.created_at, a.handle, a.display_name, a.avatar_url, a.banner_url FROM records r JOIN accounts a ON a.did = r.did WHERE r.rkey = $1 AND r.collection = \'app.bsky.feed.post\'',
+    [id]
+  );
+  if (!rows.rows.length) return res.status(404).json({ error: 'Status not found' });
+  const row = rows.rows[0];
+  const data = row.data || {};
+  data.sensitive = Boolean(sensitive);
+  if (data.sensitive) {
+    data.labels = { '$type': 'com.atproto.label.defs#selfLabels', values: [{ val: '!warn' }] };
+  } else {
+    delete data.labels;
+  }
+  await query('UPDATE records SET data = $1, updated_at = NOW() WHERE rkey = $2', [JSON.stringify(data), id]);
+  res.json({ id, sensitive: data.sensitive });
+});
 
 export default bridgeRouter;
